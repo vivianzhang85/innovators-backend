@@ -1,0 +1,289 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Broadway Experience</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 3px solid #ffd700;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 3.5em;
+            color: #ffd700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.2em;
+            color: #ddd;
+            font-style: italic;
+        }
+        
+        .selector-section {
+            text-align: center;
+            margin: 40px 0;
+        }
+        
+        .random-btn {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: #1a1a2e;
+            border: none;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .random-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .random-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .show-display {
+            display: none;
+            animation: fadeIn 0.8s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .show-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            margin-top: 40px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .show-title {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #ffd700;
+        }
+        
+        .show-year {
+            font-size: 1em;
+            color: #aaa;
+            margin-bottom: 20px;
+        }
+        
+        .show-description {
+            font-size: 1.2em;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            color: #ddd;
+        }
+        
+        .media-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .media-section {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .media-box {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .media-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #ffd700;
+            text-align: center;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        audio {
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        .curtain {
+            font-size: 4em;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .loading {
+            text-align: center;
+            font-size: 1.5em;
+            color: #ffd700;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="curtain">🎭</div>
+            <h1>Broadway Tonight!</h1>
+            <p class="subtitle">Your magical theatrical experience awaits</p>
+        </header>
+        
+        <div class="selector-section">
+            <button class="random-btn" onclick="selectRandomShow()">
+                ✨ Choose My Show! ✨
+            </button>
+            <div class="loading" id="loading">
+                🎪 Opening the curtains...
+            </div>
+        </div>
+        
+        <div class="show-display" id="showDisplay">
+            <div class="show-card">
+                <h2 class="show-title" id="showTitle"></h2>
+                <p class="show-year" id="showYear"></p>
+                <p class="show-description" id="showDescription"></p>
+                
+                <div class="media-section">
+                    <div class="media-box">
+                        <h3 class="media-title">🎬 Official Trailer</h3>
+                        <div class="video-container" id="videoContainer"></div>
+                    </div>
+                    
+                    <div class="media-box">
+                        <h3 class="media-title">🎵 Soundtrack Preview</h3>
+                        <p style="text-align: center; margin-bottom: 10px; color: #ddd;">
+                            Listen to a snippet from the show
+                        </p>
+                        <audio id="audioPlayer" controls>
+                            Your browser does not support the audio element.
+                        </audio>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        const SHOWS = {
+            "Hamilton": {
+                "description": "The story of America's Founding Father Alexander Hamilton",
+                "video": "https://www.youtube.com/embed/DSCKfXpAGHc",
+                "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+                "year": "2015"
+            },
+            "The Lion King": {
+                "description": "Disney's award-winning adaptation of the animated classic",
+                "video": "https://www.youtube.com/embed/pluUQ6qXGEQ",
+                "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+                "year": "1997"
+            },
+            "Wicked": {
+                "description": "The untold story of the Witches of Oz",
+                "video": "https://www.youtube.com/embed/Svt0UytcAgc",
+                "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+                "year": "2003"
+            },
+            "The Phantom of the Opera": {
+                "description": "A haunting tale of obsession beneath the Paris Opera House",
+                "video": "https://www.youtube.com/embed/8XQ_Ewetygs",
+                "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3",
+                "year": "1988"
+            },
+            "Dear Evan Hansen": {
+                "description": "A letter that was never meant to be seen sparks a movement",
+                "video": "https://www.youtube.com/embed/g_c_Jd-hP-s",
+                "audio": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3",
+                "year": "2016"
+            }
+        };
+        
+        function selectRandomShow() {
+            const btn = document.querySelector('.random-btn');
+            const loading = document.getElementById('loading');
+            const display = document.getElementById('showDisplay');
+            
+            btn.disabled = true;
+            loading.style.display = 'block';
+            display.style.display = 'none';
+            
+            setTimeout(() => {
+                const showNames = Object.keys(SHOWS);
+                const randomShow = showNames[Math.floor(Math.random() * showNames.length)];
+                const showData = SHOWS[randomShow];
+                
+                displayShow(randomShow, showData);
+                loading.style.display = 'none';
+                btn.disabled = false;
+            }, 1000);
+        }
+        
+        function displayShow(name, show) {
+            document.getElementById('showTitle').textContent = name;
+            document.getElementById('showYear').textContent = `Broadway Debut: ${show.year}`;
+            document.getElementById('showDescription').textContent = show.description;
+            
+            const videoContainer = document.getElementById('videoContainer');
+            videoContainer.innerHTML = `<iframe src="${show.video}" allowfullscreen></iframe>`;
+            
+            const audioPlayer = document.getElementById('audioPlayer');
+            audioPlayer.src = show.audio;
+            
+            document.getElementById('showDisplay').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
