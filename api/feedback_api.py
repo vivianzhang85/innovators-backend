@@ -109,3 +109,4 @@ class FeedbackAPI:
 api.add_resource(FeedbackAPI._Create, '/')
 api.add_resource(FeedbackAPI._ReadAll, '/all')
 api.add_resource(FeedbackAPI._UserFeedback, '/user/<string:uid>')
+
